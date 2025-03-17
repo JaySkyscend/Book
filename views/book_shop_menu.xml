@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <menuitem id="book_shop_root_menu" name="Book Shop" sequence="10"/>
+<!--    <menuitem id="book_menu" parent="book_shop_root_menu" name="Books" action="book_action"/>-->
+
+
+</odoo>

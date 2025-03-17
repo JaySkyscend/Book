@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+
+<odoo>
+    <data>  <!-- ✅ All records must be inside <data> -->
+
+        <!-- Form View -->
+        <record id="view_book_form" model="ir.ui.view">
+            <field name="name">book.shop.book.form</field>
+            <field name="model">book.shop.book</field>
+            <field name="arch" type="xml">
+                <form string="Book">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="author_id"/>
+                            <field name="publisher_id"/>
+                            <field name="price"/>
+                            <field name="stock"/>
+                            <field name="isbn"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Tree View -->
+        <record id="view_book_list" model="ir.ui.view">
+            <field name="name">book.shop.book.tree</field>
+            <field name="model">book.shop.book</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="name"/>
+                    <field name="author_id"/>
+                    <field name="publisher_id"/>
+                    <field name="price"/>
+                    <field name="stock"/>
+                    <field name="isbn"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Search View -->
+        <record id="view_book_search" model="ir.ui.view">
+            <field name="name">view.book.search</field>
+            <field name="model">book.shop.book</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="isbn"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_book" model="ir.actions.act_window">
+            <field name="name">Book</field>
+            <field name="res_model">book.shop.book</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <!-- Menu Items -->
+        <menuitem id="menu_book_root" name="Book Shop Management" sequence="1"/>
+        <menuitem id="menu_book" parent="menu_book_root" name="Book Shop" sequence="2" action="action_book"/>
+
+    </data> <!-- ✅ Closing <data> -->
+</odoo>
