@@ -14,7 +14,7 @@
                         <field name="total_amount" readonly="1"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,done"/>
                     </group>
-                    <footer>
+
 <!--                        <button name="action_confirm" type="object" string="Confirm" state="draft" class = "btn-primary"/>-->
 <!--                        <button name="action_done" type="object" string="Done" state="confirmed" class="btn-success"/>-->
 <footer>
@@ -28,8 +28,7 @@
 
 </footer>
 
-     </footer>
-                </sheet>
+     </sheet>
             </form>
         </field>
     </record>
