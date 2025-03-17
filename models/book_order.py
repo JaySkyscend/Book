@@ -28,13 +28,9 @@ class BookOrder(models.Model):
 
     @api.depends('book_ids')
     def _compute_total(self):
+        """Compute the total price of the selected books"""
         for order in self:
-            total = 0.0
-            for book in order.book_ids:
-                if book.stock < 1:
-                    raise ValueError(f"Book {book.name} is out of stock!")
-                total += book.price
-            order.total_amount = total
+            order.total_amount = sum(book.price for book in order.book_ids)
 
     def action_confirm(self):
         """Confirm the book order and reduce stock"""
@@ -43,6 +39,7 @@ class BookOrder(models.Model):
                 if book.stock < 1:
                     raise ValueError(f"Book {book.name} is out of stock!")
                 book.stock -= 1
+        self.write({'state':'confirmed'})
 
     def action_done(self):
         """Mark the order as done"""
