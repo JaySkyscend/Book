@@ -10,8 +10,9 @@
      'views/book_view.xml',
      'views/author_view.xml',
      'views/publisher_view.xml',
-     'views/sale_order_views.xml',
      'views/book_shop_menu.xml',
+     'views/book_order_views.xml',
+     'data/book_order_sequence.xml'
     ],
     'installable':True,
     'application':True,
