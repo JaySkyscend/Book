@@ -29,6 +29,17 @@
             </field>
     </record>
 
+
+     <record id="view_author_search" model="ir.ui.view">
+            <field name="name">view.author.search</field>
+            <field name="model">book.shop.author</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                </search>
+            </field>
+        </record>
+
      <record id="action_author" model="ir.actions.act_window">
             <field name="name">Author</field>
             <field name="res_model">book.shop.author</field>
@@ -37,6 +48,8 @@
 
 
 
-    <menuitem id="author_menu" parent="book_shop_root_menu" name="Authors" action="action_author"/>
+    <menuitem id="menu_author" parent="menu_book_root" name="Authors" action="action_author" sequence="3"/>
+
+<!--    <menuitem id="menu_book" parent="menu_book_root" name="Books" sequence="2" action="action_book"/>-->
 
 </odoo>

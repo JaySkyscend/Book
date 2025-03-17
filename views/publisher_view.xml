@@ -27,7 +27,7 @@
 
 
     <record id="view_publisher_search" model="ir.ui.view">
-            <field name="name">book.shop.publisher.search</field>
+            <field name="name">view.publisher.search</field>
             <field name="model">book.shop.publisher</field>
             <field name="arch" type="xml">
                 <search>
@@ -38,12 +38,12 @@
 
 
     <record id="action_publisher" model="ir.actions.act_window">
-            <field name="name">Book</field>
+            <field name="name">Publisher</field>
             <field name="res_model">book.shop.publisher</field>
             <field name="view_mode">list,form</field>
         </record>
 
-    <menuitem id="publisher_menu" parent="book_shop_root_menu" name="Publishers" action="action_publisher"/>
+    <menuitem id="menu_publisher" parent="menu_book_root" name="Publishers" action="action_publisher" sequence="4"/>
 
 
 

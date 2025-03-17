@@ -3,7 +3,7 @@
 
 
 <odoo>
-    <data>  <!-- ✅ All records must be inside <data> -->
+     <!-- ✅ All records must be inside <data> -->
 
         <!-- Form View -->
         <record id="view_book_form" model="ir.ui.view">
@@ -55,14 +55,14 @@
 
         <!-- Action -->
         <record id="action_book" model="ir.actions.act_window">
-            <field name="name">Book</field>
+            <field name="name">Books</field>
             <field name="res_model">book.shop.book</field>
             <field name="view_mode">list,form</field>
         </record>
 
         <!-- Menu Items -->
         <menuitem id="menu_book_root" name="Book Shop Management" sequence="1"/>
-        <menuitem id="menu_book" parent="menu_book_root" name="Book Shop" sequence="2" action="action_book"/>
+        <menuitem id="menu_book" parent="menu_book_root" name="Books" sequence="2" action="action_book"/>
 
-    </data> <!-- ✅ Closing <data> -->
+    <!-- ✅ Closing <data> -->
 </odoo>

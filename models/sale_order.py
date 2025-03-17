@@ -1,15 +1,17 @@
-from odoo import models, fields , api
+from V17.odoo17.odoo.tools.populate import compute
+from odoo import models, fields , api , exceptions
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
     book_ids = fields.Many2many('book.shop.book',string='Books')
+    book_quantities = fields.One2many('sale.order.book.line','sale_order_id',string="Book Quantities")
+    total_book_price = fields.Float(string="Total Book Price",compute="_compute_total_book_price",store = True)
 
-    @api.model
-    def create(self,vals):
-        order = super(SaleOrder, self).create(vals)
-        for book in order.book_ids:
-            if book.stock < 1:
-                raise ValueError(f"Book {book.name} is out of stock!")
-            book.stock -= 1
-        return order
+    @api.depends('book_quantities')
+    def _compute_total_book_price(self):
+        """Compute total price for books in the order"""
+        for order in self:
+            order.total_book_price = sum(line.book_id.price * line.quantity for line in order.book_quantities)
+
+
