@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <record id="view_book_order_form" model="ir.ui.view">
-        <field name="name">book.order.form.view</field>
+        <field name="name">book.shop.order.form</field>
         <field name="model">book.shop.order</field>
         <field name="arch" type="xml">
             <form string="Book Order">
@@ -10,31 +10,37 @@
                         <field name="name"/>
                         <field name="customer_name"/>
                         <field name="order_date"/>
-                        <field name="book_ids" widget="many2many_tags"/>
-                        <field name="total_amount" readonly="1"/>
-                        <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,done"/>
                     </group>
 
-<!--                        <button name="action_confirm" type="object" string="Confirm" state="draft" class = "btn-primary"/>-->
-<!--                        <button name="action_done" type="object" string="Done" state="confirmed" class="btn-success"/>-->
-<footer>
-<button name="action_confirm" string="Confirm" type="object" class="btn-primary"
-    invisible="[['state' ,'!=', 'draft']]"/>
+                    <group string="Books Ordered">
+                        <field name="book_order_lines">
+                            <list editable="bottom">
+                                <field name="book_id"/>
+                                <field name="quantity"/>
+                            </list>
+                        </field>
+                    </group>
 
-<!-- Done button: Visible only when state is 'confirmed' -->
-<button name="action_done" string="Done" type="object" class="btn-success"
-    invisible="[['state', '!=', 'confirmed']]"/>
 
 
-</footer>
+                    <group>
+                        <field name="total_amount" readonly="1"/>
+                        <field name="state" readonly="1"/>
+                    </group>
 
-     </sheet>
+                    <footer>
+                        <button name="action_confirm" type="object" string="Confirm Order" state="draft"/>
+                        <button name="action_done" type="object" string="Mark as Done" state="confirmed"/>
+                    </footer>
+
+                </sheet>
             </form>
         </field>
     </record>
 
 
-    <record id="view_book_order_tree" model="ir.ui.view">
+
+    <record id="view_book_order_list" model="ir.ui.view">
         <field name="name">book.shop.order.list</field>
         <field name="model">book.shop.order</field>
         <field name="arch" type="xml">
@@ -49,12 +55,71 @@
     </record>
 
     <record id="action_book_order" model="ir.actions.act_window">
-            <field name="name">Books Order</field>
-            <field name="res_model">book.shop.order</field>
-            <field name="view_mode">list,form</field>
-        </record>
+        <field name="name">Book Orders</field>
+        <field name="res_model">book.shop.order</field>
+        <field name="view_mode">list,form</field>
+    </record>
 
 
-    <menuitem id="menu_book_order" parent="menu_book_root" name="Book Order" action="action_book_order" sequence="5"/>
+    <menuitem id="menu_book_order" parent="menu_book_root" name="Book Order" action="action_book_order" sequence="5"/>-->
+
+
+
+<!--    <record id="view_book_order_form" model="ir.ui.view">-->
+<!--        <field name="name">book.shop.order.form</field>-->
+<!--        <field name="model">book.shop.order</field>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <form string="Book Order">-->
+<!--                <sheet>-->
+<!--                    <group>-->
+<!--                        <field name="name"/>-->
+<!--                        <field name="customer_name"/>-->
+<!--                        <field name="order_date"/>-->
+<!--                        <field name="book_ids" widget="many2many_tags"/>-->
+<!--                        <field name="total_amount" readonly="1"/>-->
+<!--                        <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,done"/>-->
+<!--                    </group>-->
+
+<!--&lt;!&ndash;                        <button name="action_confirm" type="object" string="Confirm" state="draft" class = "btn-primary"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <button name="action_done" type="object" string="Done" state="confirmed" class="btn-success"/>&ndash;&gt;-->
+<!--<footer>-->
+<!--<button name="action_confirm" string="Confirm" type="object" class="btn-primary"-->
+<!--    invisible="[['state' ,'!=', 'draft']]"/>-->
+
+<!--&lt;!&ndash; Done button: Visible only when state is 'confirmed' &ndash;&gt;-->
+<!--<button name="action_done" string="Done" type="object" class="btn-success"-->
+<!--    invisible="[['state', '!=', 'confirmed']]"/>-->
+
+
+<!--</footer>-->
+
+<!--     </sheet>-->
+<!--            </form>-->
+<!--        </field>-->
+<!--    </record>-->
+
+
+<!--    <record id="view_book_order_tree" model="ir.ui.view">-->
+<!--        <field name="name">book.shop.order.list</field>-->
+<!--        <field name="model">book.shop.order</field>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <list string="Book Orders">-->
+<!--                <field name="name"/>-->
+<!--                <field name="customer_name"/>-->
+<!--                <field name="order_date"/>-->
+<!--                <field name="total_amount"/>-->
+<!--                <field name="state"/>-->
+<!--            </list>-->
+<!--        </field>-->
+<!--    </record>-->
+
+<!--    <record id="action_book_order" model="ir.actions.act_window">-->
+<!--            <field name="name">Books Order</field>-->
+<!--            <field name="res_model">book.shop.order</field>-->
+<!--            <field name="view_mode">list,form</field>-->
+<!--        </record>-->
+
+
+<!--    <menuitem id="menu_book_order" parent="menu_book_root" name="Book Order" action="action_book_order" sequence="5"/>-->
 
 </odoo>
