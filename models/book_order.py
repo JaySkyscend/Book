@@ -18,12 +18,27 @@ class BookOrder(models.Model):
         ('done','Done')
     ], default='draft',string='Status')
 
+
+    invoice_id = fields.Many2one('book.shop.invoice',string="Invoice")
+
     @api.model
     def create(self,vals):
         """Generate a unique Order Reference when creating a new order"""
         if vals.get('name','New') == 'New':
             vals['name'] = self.env['ir.sequence'].next_by_code('book.shop.order') or 'New'
-        return super(BookOrder, self).create(vals)
+
+        order = super().create(vals)
+
+        # Automatically create an invoice upon order creation
+        invoice  = order.env['book.shop.invoice'].create({
+            'order_id':order.id,
+            'customer_name':order.customer_name,
+            'total_amount':order.total_amount,
+        })
+
+        order.invoice_id = invoice.id # link the invoice to the order
+
+        return order
 
     @api.depends('book_order_lines')
     def _compute_total(self):
@@ -38,11 +53,41 @@ class BookOrder(models.Model):
                 if line.book_id.stock < line.quantity:
                     raise ValueError(f"Not enough stock for {line.book_id.name}!")
                 line.book_id.stock -= line.quantity
-            self.write({'state':'confirmed'})
+
+            # change order state to 'Confirmed'
+            order.write({'state':'confirmed'})
+
+
+
+            # Automatically Create Invoice if not already created
+            if not order.invoice_id:
+                invoice = self.env['book.shop.invoice'].create({
+                    'order_id': order.id,
+                    'customer_name':order.customer_name,
+                    'total_amount': order.total_amount,
+                 })
+
+                order.invoice_id = invoice.id
 
     def action_done(self):
         """Mark the order as done"""
         self.write({'state':'done'})
+
+
+    # def action_create_invoice(self):
+    #     """Manually generate an invoice for the book order"""
+    #     for order in self:
+    #         if order.invoice_id:
+    #             raise ValueError("An invoice has already been generated for this order.")
+    #
+    #     invoice = self.env['book.shop.invoice'].create({
+    #         'order_id':order.id ,
+    #         'customer_name':order.customer_name,
+    #         'total_amount' : order.total_amount,
+    #     })
+    #
+    #     order.write({'invoice_id':invoice.id})
+
 
 
 class BookOrderLine(models.Model):

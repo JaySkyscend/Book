@@ -12,7 +12,9 @@
      'views/publisher_view.xml',
      'views/book_shop_menu.xml',
      'views/book_order_views.xml',
-     'data/book_order_sequence.xml'
+     'data/book_order_sequence.xml',
+     'views/book_invoice_views.xml',
+     'data/book_invoice_sequence.xml',
     ],
     'installable':True,
     'application':True,
