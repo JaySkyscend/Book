@@ -1,0 +1,6 @@
+<odoo>
+    <record id="group_book_invoice_manager" model="res.groups">
+        <field name="name">Book Invoice Manager</field>
+        <field name="category_id" ref="base.m"
+    </record>
+</odoo>

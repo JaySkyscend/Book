@@ -17,6 +17,9 @@ class BookInvoice(models.Model):
     ], default='draft',string='Status')
 
 
+    # Store book order details
+    book_order_lines = fields.One2many('book.shop.order.line',related='order_id.book_order_lines',string="Books")
+
     @api.model_create_multi
     def create(self,vals_list):
         """Batch create invoices with auto-generated Invoice Number & Paid status"""
@@ -51,18 +54,6 @@ class BookInvoice(models.Model):
             invoice.order_id.write({'state':'done'})  # mark order as done
             invoice.write({'state':'paid'}) # Auto-mark invoice as paid
 
-
-
-            #reduce stock for each book in the order
-            # if invoice.order_id:
-            #     for line in invoice.order_id.book_order_lines:
-            #         if line.book_id.stock < line.quantity:
-            #             raise ValueError(f"Not enough stock for {line.book_id.name}!")
-            #         line.book_id.stock -= line.quantity
-            #     invoice.order_id.write({'state':'done'})
-            #
-            # invoice.write({'state':'paid'})
-
         return invoices
 
     def action_mark_paid(self):
@@ -72,4 +63,14 @@ class BookInvoice(models.Model):
         # Update order state to 'done' when invoice is paid
         if self.order_id:
             self.order_id.write({'state':'done'})
+
+
+    def action_print_invoice(self):
+        """Generate and Download Invoice PDF"""
+        return self.env.ref('book_shop.book_invoice_report_action').report_action(self)
+
+    def action_send_invoice_email(self):
+        """ Generate Invoice PDF and Send Email to Customer"""
+        template = self.env.ref('book_shop.book_invoice_email_template')
+        template.send_mail(self.id,force_send=True)
 

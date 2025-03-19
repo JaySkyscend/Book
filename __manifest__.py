@@ -4,7 +4,7 @@
     'version':'1.0',
     'summary':'Manage book inventory, authors , and sales',
     'author':'JayPatel',
-    'depends': ['sale'],
+    'depends': ['sale','mail','base'],
     'data': [
      'security/ir.model.access.csv',
      'views/book_view.xml',
@@ -15,6 +15,7 @@
      'data/book_order_sequence.xml',
      'views/book_invoice_views.xml',
      'data/book_invoice_sequence.xml',
+
     ],
     'installable':True,
     'application':True,

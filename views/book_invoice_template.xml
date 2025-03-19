@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<odoo>
+    <template id="book_invoice_templated">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="invoice">
+                <div class="page">
+                    <h2 style="text-align: center;">Book Store Invoice</h2>
+                    <p><strong>Invoice Number:</strong><t t-esc="invoice.name"/></p>
+                    <p><strong>Customer Name:</strong><t t-esc="invoice.customer_name"/></p>
+                    <p><strong>Invoice Date:</strong><t t-esc="invoice.invoice_date.strftime('%Y-%m-%d %H:%M')"/></p>
+                    <p><strong>Total Amount:</strong><t t-esc="invoice.total_amount"/> Rs.</p>
+
+                    <h3>Purchase Books</h3>
+                    <table class="table" style="width: 100%; border: 1px solid black;">
+                        <thead>
+                            <tr>
+                                <th style="border: 1px solid black; padding: 5px;">Book Name</th>
+                                <th style="border: 1px solid black; padding: 5px;">Quantity</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <t t-foreach="invoice.book_order_lines" t-as="line">
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 5px;">
+                                        <t t-esc="line.book_id.name"/>
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 5px;">
+                                        <t t-esc="line.quantity"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>
