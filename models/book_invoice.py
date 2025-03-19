@@ -1,6 +1,6 @@
 
 from odoo import models , fields , api
-
+from odoo.exceptions import  ValidationError
 
 class BookInvoice(models.Model):
     _name = 'book.shop.invoice'
@@ -29,10 +29,39 @@ class BookInvoice(models.Model):
         invoices =  super(BookInvoice,self).create(vals_list)
 
         # Automatically mark invoices as Paid and update order state
+        # for invoice in invoices:
+        #     invoice.write({'state':'paid'})
+        #     if invoice.order_id:
+        #         invoice.order_id.write({'state':'done'})
+
         for invoice in invoices:
-            invoice.write({'state':'paid'})
-            if invoice.order_id:
-                invoice.order_id.write({'state':'done'})
+            # Ensure the order has valid books
+            if not invoice.order_id.book_order_lines:
+                raise ValidationError("Cannot create an invoice without books in the order!")
+
+            #  check stock before deduction
+            for line in invoice.order_id.book_order_lines:
+                if line.book_id.stock < line.quantity:
+                    raise ValidationError(f"Not enough stock for {line.book_id.name}! Available: {line.book_id.stock}, Required: {line.quantity}")
+
+            # Deduct stock after validation
+            for line in invoice.order_id.book_order_lines:
+                line.book_id.stock -= line.quantity
+
+            invoice.order_id.write({'state':'done'})  # mark order as done
+            invoice.write({'state':'paid'}) # Auto-mark invoice as paid
+
+
+
+            #reduce stock for each book in the order
+            # if invoice.order_id:
+            #     for line in invoice.order_id.book_order_lines:
+            #         if line.book_id.stock < line.quantity:
+            #             raise ValueError(f"Not enough stock for {line.book_id.name}!")
+            #         line.book_id.stock -= line.quantity
+            #     invoice.order_id.write({'state':'done'})
+            #
+            # invoice.write({'state':'paid'})
 
         return invoices
 
