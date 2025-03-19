@@ -17,15 +17,27 @@ class BookInvoice(models.Model):
     ], default='draft',string='Status')
 
 
-    @api.model
-    def create(self,vals):
-        """Generate an Invoice Number when creating an invoice"""
-        if vals.get('name','New') == 'New':
-            vals['name'] = self.env['ir.sequence'].next_by_code('book.shop.invoice') or 'New'
-        return super(BookInvoice,self).create(vals)
+    @api.model_create_multi
+    def create(self,vals_list):
+        """Batch create invoices with auto-generated Invoice Number & Paid status"""
+        for vals in vals_list:
+            if vals.get('name','New') == 'New':
+                vals.update({'name':self.env['ir.sequence'].next_by_code('book.shop.invoice') or 'New'})
+                #vals['name'] = self.env['ir.sequence'].next_by_code('book.shop.invoice') or 'New'
+
+
+        invoices =  super(BookInvoice,self).create(vals_list)
+
+        # Automatically mark invoices as Paid and update order state
+        for invoice in invoices:
+            invoice.write({'state':'paid'})
+            if invoice.order_id:
+                invoice.order_id.write({'state':'done'})
+
+        return invoices
 
     def action_mark_paid(self):
-        """Mark invoice as paid"""
+        """Manually mark an invoice as Paid"""
         self.write({'state':'paid'})
 
         # Update order state to 'done' when invoice is paid
