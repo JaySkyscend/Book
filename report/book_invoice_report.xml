@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <report
-         id="book_invoice_report_action"
+         id="book_invoice_report_template"
          model="book.shop.invoice"
          string="Book Invoice"
          report_type="qweb-pdf"
-         name="book_shop.book_invoice_template"
-         file="book_shop.book_invoice_template"
-         print_report_name="'Invoice_%s' % (object.name)"
+         report_name="book_shop.book_invoice_report"
+         print_report_name="'Invoice_' + object.name"
     />
 </odoo>

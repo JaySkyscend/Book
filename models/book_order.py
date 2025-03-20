@@ -1,5 +1,6 @@
 
 from odoo import models, fields , api , _
+from odoo.exceptions import ValidationError
 
 
 
@@ -9,6 +10,7 @@ class BookOrder(models.Model):
 
     name = fields.Char(string='Order Reference',required=True,copy=False,readonly=True,default="New")
     customer_name = fields.Char(string='Customer Name',required=True)
+    customer_email = fields.Char(string='Customer Email',required=True)
     order_date = fields.Datetime(string='Order Date',default=fields.Datetime.now)
     book_order_lines = fields.One2many('book.shop.order.line','order_id',string='Books Ordered')
     total_amount = fields.Float(string='Total Amount',compute='_compute_total',store = True)

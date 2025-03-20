@@ -9,6 +9,7 @@ class BookInvoice(models.Model):
     name = fields.Char(string='Invoice Number',required=True,copy=False, readonly=True,default="New")
     order_id = fields.Many2one('book.shop.order',string='Book Order',required=True)
     customer_name = fields.Char(string='Customer Name',related='order_id.customer_name',store=True)
+    customer_email = fields.Char(string="Customer Email",related="order_id.customer_email",store=True)
     invoice_date = fields.Datetime(string='Invoice Date',default=fields.Datetime.now)
     total_amount = fields.Float(string='Total Amount',related='order_id.total_amount',store=True)
     state = fields.Selection([
@@ -70,7 +71,10 @@ class BookInvoice(models.Model):
         return self.env.ref('book_shop.book_invoice_report_action').report_action(self)
 
     def action_send_invoice_email(self):
-        """ Generate Invoice PDF and Send Email to Customer"""
+        """ Ask for an email if not available and send invoice"""
+        if not self.customer_email:
+            raise ValidationError("No email found! Please provide an email for the customer.")
+
         template = self.env.ref('book_shop.book_invoice_email_template')
         template.send_mail(self.id,force_send=True)
 

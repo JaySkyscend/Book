@@ -6,18 +6,28 @@
         <field name="model">book.shop.invoice</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                     <button name="action_mark_paid" string="Mark as Paid" type="object" class="btn-primary"
+                                modifiers="{'invisible': [('state', '=','paid')]}"/>
+
+
+                        <button name="action_send_invoice_email" string="Send Invoice Email" type="object" class="btn-secondary"
+                                confirm="Are you sure you want to send the invoice email?"
+                                modifiers="{'invisible':[('state','=','draft')]}"/>
+                </header>
                 <sheet>
                     <group>
+                        <group>
                         <field name="name"/>
                         <field name="customer_name"/>
+                        <field name="customer_email"/>
                         <field name="invoice_date"/>
                         <field name="total_amount"/>
-                        <field name="state" readonly="1"/>
                     </group>
-                    <footer>
-                        <button name="action_mark_paid" string="Mark as Paid" type="object" class="btn-primary"
-                                modifiers="{'invisible': [('state', '=','paid')]}"/>
-                    </footer>
+                    <group>
+                        <field name="state" widget="statusbar" options="{'readonly': True}"/>
+                    </group>
+                    </group>
                 </sheet>
             </form>
         </field>
@@ -31,20 +41,67 @@
             <list>
                 <field name="name"/>
                 <field name="customer_name"/>
+                <field name="customer_email"/>
                 <field name="invoice_date"/>
                 <field name="total_amount"/>
-                <field name="state"/>
+                <field name="state" widget="statusbar"/>
             </list>
         </field>
     </record>
 
+    <record id="view_book_invoice_kanban" model="ir.ui.view">
+        <field name="name">book.shop.invoice.kanban</field>
+        <field name="model">book.shop.invoice</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_view">
+                <field name="name"/>
+                <field name="customer_name"/>
+                <field name="total_amount"/>
+                <field name="state"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_card">
+                            <strong>
+                                <t t-esc="record.name.value"/>
+                            </strong>
+                            <div>
+                                <span>Customer:</span>
+                                <t t-esc="record.customer_name.value"/>
+                            </div>
+                             <div>
+                                <span>Total Amount:</span>
+                                <t t-esc="record.total_amount.value"/> Rs.
+                            </div>
+                            <div t-if="record.state and record.state.value == 'paid'">
+                                <span class="badge badge-success">Paid</span>
+                            </div>
+                            <div t-if="record.state and record.state.value == 'draft'">
+                                <span class="badge badge-danger">Pending</span>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
 
+    <record id="view_book_invoice_graph" model="ir.ui.view">
+        <field name="name">book.shop.invoice.graph</field>
+        <field name="model">book.shop.invoice</field>
+        <field name="arch" type="xml">
+            <graph string="Sales Analytics">
+                <field name="invoice_date" type="row"/>
+                <field name="total_amount" type="measure"/>
+            </graph>
+        </field>
+    </record>
 
     <record id="action_book_invoice" model="ir.actions.act_window">
         <field name="name">Invoices</field>
         <field name="res_model">book.shop.invoice</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">list,form,kanban,graph</field>
     </record>
 
     <menuitem id="menu_book_invoice" parent="menu_book_root" name="Book Invoices"  action="action_book_invoice" sequence="6"/>
+<!--    <menuitem id="menu_book_invoice_dashboard" name="Invoice Dashboard" parent="menu_book_root" action="action_book_invoice" sequence="7"/>-->
 </odoo>

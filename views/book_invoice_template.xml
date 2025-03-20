@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <odoo>
-    <template id="book_invoice_templated">
+    <template id="book_invoice_template">
         <t t-call="web.html_container">
+            <t t-call="web.html_container">
             <t t-foreach="docs" t-as="invoice">
                 <div class="page">
                     <h2 style="text-align: center;">Book Store Invoice</h2>
                     <p><strong>Invoice Number:</strong><t t-esc="invoice.name"/></p>
                     <p><strong>Customer Name:</strong><t t-esc="invoice.customer_name"/></p>
-                    <p><strong>Invoice Date:</strong><t t-esc="invoice.invoice_date.strftime('%Y-%m-%d %H:%M')"/></p>
+                    <p><strong>Invoice Date:</strong><t t-esc="format_date(invoice.invoice_date,'dd MMM yyyy')"/></p>
                     <p><strong>Total Amount:</strong><t t-esc="invoice.total_amount"/> Rs.</p>
 
                     <h3>Purchase Books</h3>
@@ -34,6 +35,7 @@
                         </tbody>
                     </table>
                 </div>
+            </t>
             </t>
         </t>
     </template>
