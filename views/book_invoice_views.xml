@@ -89,17 +89,29 @@
         <field name="name">book.shop.invoice.graph</field>
         <field name="model">book.shop.invoice</field>
         <field name="arch" type="xml">
-            <graph string="Sales Analytics">
+            <graph string="Sales Analytics" type="bar">
                 <field name="invoice_date" type="row"/>
                 <field name="total_amount" type="measure"/>
             </graph>
         </field>
     </record>
 
+    <record id="view_book_invoice_pivot" model="ir.ui.view">
+        <field name="name">book.shop.invoice.pivot</field>
+        <field name="model">book.shop.invoice</field>
+        <field name="arch" type="xml">
+            <pivot string="Invoice Pivot View">
+                <field name="invoice_date" type="col"/>
+                <field name="customer_name" type="row"/>
+                <field name="total_amount" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
     <record id="action_book_invoice" model="ir.actions.act_window">
         <field name="name">Invoices</field>
         <field name="res_model">book.shop.invoice</field>
-        <field name="view_mode">list,form,kanban,graph</field>
+        <field name="view_mode">list,form,kanban,graph,pivot</field>
     </record>
 
     <menuitem id="menu_book_invoice" parent="menu_book_root" name="Book Invoices"  action="action_book_invoice" sequence="6"/>

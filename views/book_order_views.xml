@@ -16,6 +16,9 @@
                                 confirm="Are you sure you want to mark this order as done?"
                                 modifiers="{'invisible': [('state','!=','confirmed')]}"/>
 
+<!--                        <button name="action_create_invoice" type="object" string="Generate Invoice" class = "btn-secondary"-->
+<!--                                modifiers="{'invisible':[('state','!=','done')]}"/>-->
+
                     </header>
                     <group>
                         <field name="name" widget="badge"/>
@@ -44,13 +47,6 @@
                     <field name="invoice_id" readonly="1"/>
                     </group>
 
-
-                    <footer>
-
-
-<!--                        <button name="action_create_invoice" type="object" string="Generate Invoice" class = "btn-secondary"-->
-<!--                                modifiers="{'invisible':[('state','!=','done')]}"/>-->
-                    </footer>
                 </sheet>
             </form>
         </field>

@@ -19,6 +19,7 @@
                             <field name="price"/>
                             <field name="stock"/>
                             <field name="isbn"/>
+                            <field name="sales_count"/>
                         </group>
                     </sheet>
                 </form>
@@ -37,6 +38,7 @@
                     <field name="price"/>
                     <field name="stock"/>
                     <field name="isbn"/>
+                    <field name="sales_count" readonly="1"/>
                 </list>
             </field>
         </record>
@@ -53,11 +55,35 @@
             </field>
         </record>
 
+    <record id="view_book_graph" model="ir.ui.view">
+        <field name="name">book.shop.graph</field>
+        <field name="model">book.shop.book</field>
+        <field name="arch" type="xml">
+        <graph string="Book Stock View">
+            <field name="name" type="row"/>
+            <field name="stock" type="measure"/>
+            <field name="sales_count" type="measure"/>
+        </graph>
+        </field>
+    </record>
+
+
+     <record id="view_book_pivot" model="ir.ui.view">
+        <field name="name">book.shop.pivot</field>
+        <field name="model">book.shop.book</field>
+        <field name="arch" type="xml">
+        <graph string="Book Stock Pivot view">
+            <field name="name" type="row"/>
+            <field name="stock" type="measure"/>
+        </graph>
+        </field>
+    </record>
+
         <!-- Action -->
         <record id="action_book" model="ir.actions.act_window">
             <field name="name">Books</field>
             <field name="res_model">book.shop.book</field>
-            <field name="view_mode">list,form</field>
+            <field name="view_mode">list,form,graph,pivot</field>
         </record>
 
         <!-- Menu Items -->
