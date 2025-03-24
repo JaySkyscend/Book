@@ -12,15 +12,27 @@
             <field name="arch" type="xml">
                 <form string="Book">
                     <sheet>
+                        <notebook>
+                            <page string="Book Details">
                         <group>
+                            <group>
                             <field name="name"/>
                             <field name="author_id"/>
                             <field name="publisher_id"/>
-                            <field name="price"/>
+                            </group>
+                        <group>
+                            <field name="price" widget="monetary"/>
                             <field name="stock"/>
                             <field name="isbn"/>
-                            <field name="sales_count"/>
                         </group>
+                        </group>
+                        </page>
+                        <page string="Sales Information">
+                            <group>
+                            <field name="sales_count" readonly="1"/>
+                            </group>
+                       </page>
+                        </notebook>
                     </sheet>
                 </form>
             </field>
@@ -32,13 +44,13 @@
             <field name="model">book.shop.book</field>
             <field name="arch" type="xml">
                 <list>
-                    <field name="name"/>
-                    <field name="author_id"/>
-                    <field name="publisher_id"/>
-                    <field name="price"/>
-                    <field name="stock"/>
-                    <field name="isbn"/>
-                    <field name="sales_count" readonly="1"/>
+                    <field name="name" string="Title"/>
+                    <field name="author_id" string="Author" />
+                    <field name="publisher_id" string="Publisher"/>
+                    <field name="price" string="Price" widget="monetary"/>
+                    <field name="stock" string="Stock"/>
+                    <field name="isbn" string="ISBN"/>
+                    <field name="sales_count" string="Sales" widget="progressbar"/>
                 </list>
             </field>
         </record>
